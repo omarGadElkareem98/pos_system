@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "395693444908",
+    "project_id": "mobilysystem",
+    "storage_bucket": "mobilysystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395693444908:android:d4dc4661b73864b31ce689",
+        "android_client_info": {
+          "package_name": "com.example.mobilysystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2DtkD8o_OEWYz4PywoyXSTHlvuqMjZTo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
