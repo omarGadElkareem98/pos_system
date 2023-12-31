@@ -2,6 +2,7 @@
   import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobilysystem/Screens/HomeScreen.dart';
 
 class LoginScreen extends StatefulWidget {
     const LoginScreen({super.key});
@@ -11,14 +12,12 @@ class LoginScreen extends StatefulWidget {
   }
 
   class _LoginScreenState extends State<LoginScreen> {
+
+  TextEditingController EmailController = TextEditingController();
+  TextEditingController PasswordController = TextEditingController();
     @override
 
-    void LoginUser()async{
 
-      var  auth = FirebaseAuth.instance;
-   UserCredential user =  await   auth.createUserWithEmailAndPassword(email: "omar0@gmail.com", password: "0000000");
-      print(user.user?.email!);
-    }
 
 
     Widget build(BuildContext context) {
@@ -29,7 +28,9 @@ class LoginScreen extends StatefulWidget {
           child:   Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            const   TextField(
+               TextField(
+
+              controller: EmailController,
 
                 decoration: InputDecoration(
 
@@ -41,8 +42,9 @@ class LoginScreen extends StatefulWidget {
 
           const     SizedBox(height: 30,),
 
-           const    TextField(
+               TextField(
                 obscureText: true,
+                controller: PasswordController,
                 decoration: InputDecoration(
                   hintText: 'password',
                   label: Text('password'),
@@ -58,12 +60,26 @@ class LoginScreen extends StatefulWidget {
                 width: double.infinity,
                   child: ElevatedButton(
 
-                      onPressed: (){
-                        LoginUser();
+                      onPressed: ()async{
+                        try {
+                          final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                              email: EmailController.text,
+                              password: PasswordController.text
+                          );
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return HomeScreen();
+                          }));
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
                       },
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Colors.teal
+                          Colors.blue
                         )
                       ),
                       child: Text('Login' , style: TextStyle(

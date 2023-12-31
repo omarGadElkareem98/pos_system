@@ -1,10 +1,14 @@
 
-  import 'package:flutter/cupertino.dart';
+  import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobilysystem/Screens/LoginScreen.dart';
 
 class RegisterScreen extends StatelessWidget {
-    const RegisterScreen({super.key});
+     RegisterScreen({super.key});
 
+    TextEditingController EmailController = TextEditingController();
+    TextEditingController PasswordController = TextEditingController();
     @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -18,10 +22,11 @@ class RegisterScreen extends StatelessWidget {
               Text("Welcome to Mobily System" , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),
               SizedBox(height: 20,),
               TextFormField (
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
+                controller: EmailController,
                 decoration: InputDecoration(
-                  hintText: 'Enter Phone number',
-                  label: Text('enter phone number'),
+                  hintText: 'Enter Email Adress',
+                  label: Text('enter Email Adress'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                   )
@@ -30,6 +35,7 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(height: 20,),
               TextFormField(
                 keyboardType: TextInputType.number,
+                controller: PasswordController,
                 decoration: InputDecoration(
                   label: Text('Password'),
 
@@ -41,10 +47,38 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 obscureText: true,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return LoginScreen();
+                    }));
+                  }, child: Text('Login'))
+                ],
+              ),
               SizedBox(height: 20,),
             Container(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: (){},
+                child: ElevatedButton(onPressed: () async{
+                  try {
+                    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: EmailController.text ,
+                      password: PasswordController.text ,
+                    );
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return LoginScreen();
+                  }));
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      print('The account already exists for that email.');
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
                     style: ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
                         Colors.blue.shade900
@@ -55,7 +89,9 @@ class RegisterScreen extends StatelessWidget {
                       fontSize: 20,
                       color: Colors.white
                     ),))
-            )
+            ),
+
+
             ],
           ),
         ),

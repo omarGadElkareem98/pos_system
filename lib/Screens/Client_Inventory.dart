@@ -26,6 +26,34 @@ class ClientInventroy extends StatefulWidget {
   TextEditingController PartsMoneyController = TextEditingController();
   TextEditingController DateController = TextEditingController();
 
+  int ?results = 0,num1= 0 ,num2 = 0 , num3 = 0;
+
+  PricebeforeParts (){
+    setState(() {
+      num1 = int.parse(MoneyController.text);
+      num2 = int.parse(priceDierctController.text);
+
+      results = num2! - num1!;
+    });
+  }
+
+  int ? PricePartsValue = 0;
+
+  PriceParts (){
+    setState(() {
+      num1 = int.parse(PriceController.text);
+      num2 = int.parse(HanderdParsentController.text);
+      num3 = int.parse(MonthesNumberController.text);
+
+      PricePartsValue = num1! * num2!  ~/num3!;
+    });
+  }
+
+
+
+
+
+
   DateTime _dateTime = DateTime.now();
   bool VisiableForm = false;
 
@@ -71,9 +99,6 @@ class ClientInventroy extends StatefulWidget {
     } ) ;
 
   }
-
-
-
 
 
     @override
@@ -128,21 +153,27 @@ class ClientInventroy extends StatefulWidget {
                       width: double.infinity,
                       child: Row(
                         children: [
-                          Expanded(child: TextFormField(
-                            controller: pricePartController,
-                            validator:  (value){
-                              if(value!.isEmpty){
-                                return "البيانات مطلوبه";
-
-                              }
+                          Expanded(child: InkWell(
+                            onTap: (){
+                              PriceParts();
                             },
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16)
+                            child: TextFormField(
+                              enabled: false,
+                              controller: pricePartController,
+                              validator:  (value){
+                                if(value!.isEmpty){
+                                  return "البيانات مطلوبه";
+
+                                }
+                              },
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16)
+                                ),
+                                hintText: ' 0',
+                                label: Text("$PricePartsValue")
                               ),
-                              hintText: 'سعر القسط',
-                              label: Text('سعر القسط',)
                             ),
                           )),
                           SizedBox(width: 10,),
@@ -233,21 +264,30 @@ class ClientInventroy extends StatefulWidget {
                             ),
                           )),
                           SizedBox(width: 10,),
-                          Expanded(child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: PriceController,
-                            validator:  (value){
-                              if(value!.isEmpty){
-                                return "البيانات مطلوبه";
-
-                              }
+                          Expanded(child: InkWell(
+                            onTap: (){
+                              PricebeforeParts();
                             },
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(16)
-                                ),
-                                hintText: '  المطلوب',
-                                label: Text('  المطلوب',)
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              enabled: false,
+                              controller: PriceController,
+                              validator:  (value){
+                                if(value!.isEmpty){
+                                  return "البيانات مطلوبه";
+
+                                }
+                              },
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(16)
+                                  ),
+                                  hintText: '  المطلوب',
+                                  label: Text('  $results المطلوب ' , style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold
+                                  ),)
+                              ),
                             ),
                           )),
 

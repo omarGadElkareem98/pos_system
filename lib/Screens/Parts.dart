@@ -1,5 +1,7 @@
 
   import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:mobilysystem/Screens/Add_Client_Screen.dart';
 
 class Parts extends StatefulWidget {
     const Parts({super.key});
@@ -9,8 +11,10 @@ class Parts extends StatefulWidget {
   }
 
   class _PartsState extends State<Parts> {
+
+
     @override
     Widget build(BuildContext context) {
-      return const Placeholder();
+      return Scaffold();
     }
   }
