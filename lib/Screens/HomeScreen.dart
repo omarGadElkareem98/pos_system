@@ -1,8 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:mobilysystem/Screens/BankScreen.dart';
 import 'package:mobilysystem/Screens/Inventory_buy.dart';
 import 'package:mobilysystem/Screens/Parts.dart';
+
 import 'package:mobilysystem/Screens/Sales.dart';
 import 'package:mobilysystem/Screens/StockScreen.dart';
 import 'package:mobilysystem/Widgets/Custom_App_bar.dart';
@@ -39,9 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
       "ImageUrl" :  'https://i.pinimg.com/564x/dd/31/84/dd3184f55d2908ef8c35b85d00553bcb.jpg'},
     { "name" :  ' تقسيط',
       "ImageUrl" :  'https://e7.pngegg.com/pngimages/214/501/png-clipart-computer-icons-price-installment-text-sign.png'},
-
-
-
 
   ];
 
@@ -154,20 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 15,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return Parts();
-                    }) );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.currency_exchange_outlined),
-                      SizedBox(width: 10,),
-                      Text(" نظام التقسيط" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
-                    ],
-                  ),
-                ),
+
 
                 Container(
                   width: double.infinity,
@@ -262,17 +248,35 @@ class _HomeScreenState extends State<HomeScreen> {
                               }));
                             } ,
                               child:
-                              CategoryItem(ImageUrl: 'https://i.pinimg.com/564x/dd/31/84/dd3184f55d2908ef8c35b85d00553bcb.jpg', text: 'المخزون')),
-            
-                          GestureDetector(
+                              CategoryItem(ImageUrl: 'https://i.pinimg.com/564x/dd/31/84/dd3184f55d2908ef8c35b85d00553bcb.jpg', text: 'المخزن')),
+                          InkWell(
+                              onTap : (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return PartsScreen();
+                                }));
+                              } ,
+                              child:
+                              CategoryItem(ImageUrl: 'https://cdn-icons-png.flaticon.com/512/6798/6798995.png', text: 'الاقساط')),
 
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (contexr){
-                                return Parts();
-                              }));
-                            },
 
-                              child: CategoryItem(ImageUrl: 'https://e7.pngegg.com/pngimages/214/501/png-clipart-computer-icons-price-installment-text-sign.png', text: 'تقسيط')),
+
+                        ],
+                      ),
+                      SizedBox(height: 15,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                              onTap : (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return BankScreen();
+                                }));
+                              } ,
+                              child:
+                              CategoryItem(ImageUrl: 'https://cdn-icons-png.flaticon.com/512/4770/4770298.png', text: 'الخزنه')),
+
+
+
                         ],
                       ),
             

@@ -14,7 +14,7 @@ class ClientInventroy extends StatefulWidget {
   class _ClientInventroyState extends State<ClientInventroy> {
 
 
-
+  TextEditingController nameClientControllr = TextEditingController();
   TextEditingController InvicenameProductController = TextEditingController();
   TextEditingController pricePartController = TextEditingController();
   TextEditingController priceDierctController = TextEditingController();
@@ -37,7 +37,7 @@ class ClientInventroy extends StatefulWidget {
     });
   }
 
-  int ? PricePartsValue = 0;
+  int ? PricePartsValue ;
 
   PriceParts (){
     setState(() {
@@ -62,6 +62,7 @@ class ClientInventroy extends StatefulWidget {
 
   SaveInventory()async{
     await InventroyData.add({
+      "nameClient" : nameClientControllr.text,
       "InvoicenameProduct" : InvicenameProductController.text,
       "PriceParts" : pricePartController.text,
       "DierctPrice" : priceDierctController.text,
@@ -127,6 +128,25 @@ class ClientInventroy extends StatefulWidget {
                 child: Column(
                   children: [
 
+                    TextFormField(
+                      validator: (value){
+                        if(value!.isEmpty){
+                          return "البيانات مطلوبه";
+
+                        }
+
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16)
+                        ),
+                        label: Text('اسم العميل'),
+                        hintText: "اسم العميل",
+
+
+                      ),
+                      controller: nameClientControllr ,
+                    ),
                     SizedBox(height: 20,),
 
                     TextFormField(
@@ -158,7 +178,9 @@ class ClientInventroy extends StatefulWidget {
                               PriceParts();
                             },
                             child: TextFormField(
-                              enabled: false,
+
+                              enabled: true,
+
                               controller: pricePartController,
                               validator:  (value){
                                 if(value!.isEmpty){
@@ -171,8 +193,8 @@ class ClientInventroy extends StatefulWidget {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16)
                                 ),
-                                hintText: ' 0',
-                                label: Text("$PricePartsValue")
+                                hintText: '  $PricePartsValue',
+                                label: Text(" $PricePartsValue")
                               ),
                             ),
                           )),
@@ -270,7 +292,7 @@ class ClientInventroy extends StatefulWidget {
                             },
                             child: TextFormField(
                               keyboardType: TextInputType.number,
-                              enabled: false,
+                              enabled: true,
                               controller: PriceController,
                               validator:  (value){
                                 if(value!.isEmpty){

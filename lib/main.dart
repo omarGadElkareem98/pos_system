@@ -5,6 +5,7 @@ import 'package:mobilysystem/Screens/LoginScreen.dart';
 
 import 'Screens/HomeScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Screens/Inventory_detail.dart';
 import 'Screens/RegisterScreen.dart';
 import 'firebase_options.dart';
 
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
 
 
         ),
-        home: HomeScreen()
+        home: InventoryDetail()
       ),
     );
   }

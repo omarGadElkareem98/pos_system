@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.13.3
   url_launcher: ^6.2.2
   flutter_screenutil: ^5.9.0
+  awesome_dialog: ^3.2.0
 
 dev_dependencies:
   flutter_test:
