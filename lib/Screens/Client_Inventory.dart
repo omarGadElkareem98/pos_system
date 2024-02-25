@@ -37,11 +37,12 @@ class ClientInventroy extends StatefulWidget {
     });
   }
 
-  int ? PricePartsValue ;
+     int PricePartsValue = 0 ;
 
   PriceParts (){
+
     setState(() {
-      num1 = int.parse(PriceController.text);
+      num1 = int.parse(priceDierctController.text);
       num2 = int.parse(HanderdParsentController.text);
       num3 = int.parse(MonthesNumberController.text);
 
@@ -179,7 +180,7 @@ class ClientInventroy extends StatefulWidget {
                             },
                             child: TextFormField(
 
-                              enabled: true,
+                              enabled: false,
 
                               controller: pricePartController,
                               validator:  (value){
@@ -193,8 +194,8 @@ class ClientInventroy extends StatefulWidget {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16)
                                 ),
-                                hintText: '  $PricePartsValue',
-                                label: Text(" $PricePartsValue")
+                                hintText: ' ',
+                                label: Text("  ")
                               ),
                             ),
                           )),
@@ -305,7 +306,7 @@ class ClientInventroy extends StatefulWidget {
                                       borderRadius: BorderRadius.circular(16)
                                   ),
                                   hintText: '  المطلوب',
-                                  label: Text('  $results المطلوب ' , style: TextStyle(
+                                  label: Text('   المطلوب ' , style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold
                                   ),)

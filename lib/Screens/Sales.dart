@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilysystem/Screens/Add_sales_Screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Sales extends StatefulWidget {
     const Sales({super.key});
@@ -58,7 +59,9 @@ class Sales extends StatefulWidget {
             SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SearchBar(),
+              child: SearchBar(
+                hintText: 'بحث عن مورد',
+              ),
             ),
             SizedBox(
               height: 600,
@@ -74,12 +77,34 @@ class Sales extends StatefulWidget {
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    child: ListTile(
-                      title: Text('${SallerData[index]['nameSaller']}' , style: TextStyle(color: Colors.black , fontSize: 20),),
+                    child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text("${SallerData[index]['nameSaller']}"),
+                                Text("${SallerData[index]['PhoneNumberSaller']}")
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                CallPhoneNumber(index);
+                              },
+                                child: Icon(Icons.phone , color: Colors.green,)),
+                          ],
+                        ),
+                      children: [
+                        Column(
+                          children: [
+                              Text("دفعت كام :- ${SallerData[index]['Fezz']}"),
+                            Text("هو ليه كام :- ${SallerData[index]['Feezbuy']}"),
 
-                      subtitle: Text('${SallerData[index]['PhoneNumberSaller']}' , style: TextStyle(color: Colors.black),),
 
-                    ),
+                          ],
+                        ),
+                      ],
+                    )
                   ),
                 );
               }),
@@ -89,4 +114,10 @@ class Sales extends StatefulWidget {
         
       );
     }
+  void CallPhoneNumber (index) async{
+    String PhoneNumber = '+${SallerData[index]['PhoneNumberSaller']}';
+    var phoneUrl = 'tel://$PhoneNumber';
+
+    await  launch(phoneUrl);
+  }
   }

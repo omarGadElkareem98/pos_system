@@ -1,6 +1,8 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobilysystem/Screens/BankScreen.dart';
 import 'package:mobilysystem/Screens/Inventory_buy.dart';
 import 'package:mobilysystem/Screens/Parts.dart';
@@ -10,6 +12,7 @@ import 'package:mobilysystem/Screens/StockScreen.dart';
 import 'package:mobilysystem/Widgets/Custom_App_bar.dart';
 
 import 'ClientScreen.dart';
+import 'Inventory_detail.dart';
 import 'inventory_Sale.dart';
 
 
@@ -170,29 +173,29 @@ class _HomeScreenState extends State<HomeScreen> {
     
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1509017174183-0b7e0278f1ec?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),fit: BoxFit.cover)
+            image: DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1509017174183-0b7e0278f1ec?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),fit: BoxFit.cover)
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                SizedBox(height: 15,),
+              SizedBox(height: 15,),
 
-           const    Text("Mobily For Electronic",style: TextStyle(
+              const    Text("Mobily For Electronic",style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20
               ),),
-            
-            const   SizedBox(height: 15,),
-            
+
+              const   SizedBox(height: 15,),
+
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Container(
-            
+
                   child: Column(
                     children: [
-            
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -203,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 }) );
                               },
                               child: CategoryItem(ImageUrl: "https://www.shutterstock.com/image-vector/check-mark-icon-260nw-1015124191.jpg", text: 'فاتوره بيع')),
-            
+
                           GestureDetector(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: ( context) {
@@ -211,52 +214,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                 }));
                               },
                               child: CategoryItem(ImageUrl: 'https://www.insightrobotics.com/wp-content/uploads/2018/10/inventory-icon-1.png', text: 'فاتوره شراء')),
+
+
                         ],
                       ),
-            
-                  const     SizedBox(height: 18,),
+
+                      const     SizedBox(height: 18,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           GestureDetector(
-            
+
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){
                                   return ClientScreen();
                                 }) );
                               },
-            
+
                               child: CategoryItem(ImageUrl: 'https://icons.veryicon.com/png/o/miscellaneous/cloud-keeper/client-7.png', text: 'العملاء')),
-            
+
                           GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return Sales();
-                              }));
-                            },
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return Sales();
+                                }));
+                              },
                               child: CategoryItem(ImageUrl: 'https://static.thenounproject.com/png/2620662-200.png', text: 'الموردون')),
                         ],
                       ),
-                    const  SizedBox(height: 18,),
+                      const  SizedBox(height: 18,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           InkWell(
-                            onTap : (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return StockScreen();
-                              }));
-                            } ,
+                              onTap : (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return StockScreen();
+                                }));
+                              } ,
                               child:
                               CategoryItem(ImageUrl: 'https://i.pinimg.com/564x/dd/31/84/dd3184f55d2908ef8c35b85d00553bcb.jpg', text: 'المخزن')),
                           InkWell(
                               onTap : (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return PartsScreen();
+                                  return InventoryDetail();
                                 }));
                               } ,
                               child:
-                              CategoryItem(ImageUrl: 'https://cdn-icons-png.flaticon.com/512/6798/6798995.png', text: 'الاقساط')),
+                              CategoryItem(ImageUrl: 'https://cdn-icons-png.flaticon.com/512/6798/6798995.png', text: 'فواتير')),
 
 
 
@@ -279,17 +284,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         ],
                       ),
-            
+
                     ],
                   ),
                 ),
               )
-            
+
             ],
-          ),
+          )
         ),
       ),
-    
+
+
     );
   }
 }
@@ -323,3 +329,4 @@ class CategoryItem extends StatelessWidget {
     );
   }
 }
+
