@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:mobilysystem/Screens/StockScreen.dart';
 
 class AddProduct extends StatefulWidget {
+
+
+  static const idScreen = "AddProduct";
+
     const AddProduct({super.key});
 
     @override
@@ -73,6 +77,7 @@ class AddProduct extends StatefulWidget {
                   ),
                const    SizedBox(height: 20,),
                   TextFormField(
+                    keyboardType: TextInputType.number,
                     validator: (value){
                       if(value!.isEmpty){
                         return "البيانات مطلوبه ";
@@ -88,6 +93,7 @@ class AddProduct extends StatefulWidget {
                   ),
                 const   SizedBox(height: 20,),
                   TextFormField(
+                    keyboardType: TextInputType.number,
                     validator: (value){
                       if(value!.isEmpty){
                         return "البيانات مطلوبه ";
@@ -102,6 +108,7 @@ class AddProduct extends StatefulWidget {
                   ),
                const    SizedBox(height: 20,),
                   TextFormField(
+                    keyboardType: TextInputType.number,
                     validator: (value){
                       if(value!.isEmpty){
                         return "البيانات مطلوبه ";
@@ -118,7 +125,8 @@ class AddProduct extends StatefulWidget {
               
                   Container(
                     width: double.infinity,
-              
+
+                     
                       child: ElevatedButton(
                           onPressed: (){
               
@@ -137,14 +145,14 @@ class AddProduct extends StatefulWidget {
                              })
 
                            );
+                           
               
 
                           },
-                          style: const ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                              Colors.teal
-                            )
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(Colors.blue)
                           ),
+
                           child: const  Text('اضافه منتج' ,style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

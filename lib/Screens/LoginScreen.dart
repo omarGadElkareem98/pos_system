@@ -1,10 +1,17 @@
 
+
+
   import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobilysystem/Screens/HomeScreen.dart';
+
+import 'HomeScreen.dart';
+import 'RegisterScreen.dart';
 
 class LoginScreen extends StatefulWidget {
+
+    static const String idScreen = "loginScreen";
+
     const LoginScreen({super.key});
 
     @override
@@ -13,10 +20,32 @@ class LoginScreen extends StatefulWidget {
 
   class _LoginScreenState extends State<LoginScreen> {
 
-  TextEditingController EmailController = TextEditingController();
-  TextEditingController PasswordController = TextEditingController();
-    @override
 
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
+
+
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+    void loginNewuser(BuildContext context)async{
+
+      final User? firebaseUser = (
+          await _firebaseAuth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text).catchError((erorr){
+
+          })
+
+      ).user;
+
+      if(firebaseUser != null){
+        //   Save user in Database
+        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.idScreen, (route) => false);
+
+
+
+      }
+
+
+    }
 
 
 
@@ -24,73 +53,88 @@ class LoginScreen extends StatefulWidget {
       return Scaffold(
         appBar: AppBar(),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:   Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               TextField(
+          padding: const EdgeInsets.all(12),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 50,),
+                Text("login as a Rider" , style: TextStyle(
+                    fontSize: 24,
+                    fontStyle: FontStyle.italic
+                ),),
+                SizedBox(height: 20,),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
 
-              controller: EmailController,
 
-                decoration: InputDecoration(
+                    ),
+                    hintText: "youremail@gmail.com",
+                    label: Text("Email"),
+                    prefixIcon: Icon(Icons.email),
 
-                  border: OutlineInputBorder(),
-                  label: Text('Email'),
-                  hintText: 'Email'
+                  ),
+
                 ),
-              ),
+                SizedBox(height: 20,),
+                TextFormField(
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
 
-          const     SizedBox(height: 30,),
 
-               TextField(
-                obscureText: true,
-                controller: PasswordController,
-                decoration: InputDecoration(
-                  hintText: 'password',
-                  label: Text('password'),
-                  border: OutlineInputBorder(
+                    ),
+                    hintText: "password",
+                    label: Text("password"),
+                    prefixIcon: Icon(Icons.visibility),
 
-                  )
+                  ),
+
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      width: double.infinity,
+                      child: MaterialButton(onPressed: (){
+                        if (!_emailController.text.contains("@")){
 
-          const     SizedBox(height: 30,),
+                        } else if (_passwordController.text.length < 6){
 
-              Container(
-                width: double.infinity,
-                  child: ElevatedButton(
-
-                      onPressed: ()async{
-                        try {
-                          final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: EmailController.text,
-                              password: PasswordController.text
-                          );
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return HomeScreen();
-                          }));
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
-                          }
                         }
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(
-                          Colors.blue
-                        )
-                      ),
-                      child: Text('Login' , style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),)))
-            ],
+                        else{
+                          loginNewuser(context);
+                        }
+                      } , color: Colors.white, child: Text("login" , style: TextStyle(
+                          fontSize: 20
+                      ),),)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("if you Don't have account ? "),
+                    TextButton(onPressed: (){
+                      Navigator.pushNamedAndRemoveUntil(context, RegisterScreen.idScreen, (route) => false);
+                    }, child: Text("Sign Up"))
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Text("Or Sign in with Google"),
+
+                SizedBox(height: 20,),
+
+
+                SizedBox(height: 20,),
+
+
+              ],
+            ),
           ),
         ),
       );
     }
-
-
   }

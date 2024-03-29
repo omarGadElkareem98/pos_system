@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilysystem/Screens/Client_Inventory.dart';
@@ -10,6 +11,8 @@ import 'Add_Client_Screen.dart';
   class ClientScreen extends StatefulWidget {
 
 
+    static const  idScreen = "clientScreen";
+
      ClientScreen({super.key , });
 
     @override
@@ -17,6 +20,8 @@ import 'Add_Client_Screen.dart';
   }
 
   class _ClientScreenState extends State<ClientScreen> {
+
+
 
     List DataClient = [];
 
@@ -29,9 +34,11 @@ import 'Add_Client_Screen.dart';
      String ? Friend ;
 
 
+     List Newusers = [];
+
      getClientData () async {
 
-       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Clients').get();
+       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Clients').orderBy("numberClient").get();
 
        DataClient.addAll(querySnapshot.docs);
 
@@ -41,16 +48,27 @@ import 'Add_Client_Screen.dart';
 
      }
 
+     void SrearchResults (String enteredKeyword){
 
+       List reuslts = [];
+       if(enteredKeyword.isEmpty){
+         reuslts = DataClient;
 
+       } else {
+         reuslts = DataClient.where((client) => client['numberClient']).toList();
+       }
+       setState(() {
+         Newusers = reuslts;
+       });
 
-
-
+     }
 
     @override
     void initState() {
       // TODO: implement initState
      getClientData();
+     Newusers = DataClient;
+
       super.initState();
     }
     Widget build(BuildContext context) {
@@ -76,14 +94,20 @@ import 'Add_Client_Screen.dart';
                 padding: const EdgeInsets.all(8.0),
                 child: SearchBar(
                   hintText: "ابحث",
+
                   leading: Icon(Icons.search),
                 ),
-              ),
-              SizedBox(
+              ) ,
+
+
+              DataClient.isEmpty ? Center(child: Text("لا يوجد عملاء" , style: TextStyle(
+                color: Colors.black,
+                fontSize: 22
+              ),),) : SizedBox(
                 height: 700,
                 child: ListView.builder(
-                  
-                  itemCount: DataClient.length,
+
+                    itemCount: DataClient.length,
                     itemBuilder: (context , index){
 
                       return  Padding(
@@ -93,21 +117,46 @@ import 'Add_Client_Screen.dart';
                           child: ExpansionTile( title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              
+
 
                               Text("${DataClient[index]['Clientname']}"),
 
-                              Icon(Icons.delete,color: Colors.redAccent, size: 25,),
+                              GestureDetector(
+                                  onTap: (){
+                                    AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.warning,
+                                        title: "حذف",
+                                        desc: "متاكد من الحذف",
+                                        btnOkOnPress: () async{
+                                          print("deleted");
+                                          await FirebaseFirestore.instance.collection("Clients").doc(DataClient[index].id).delete();
+
+
+
+
+
+
+                                        },
+                                        btnCancelOnPress: (){
+                                          print("cancel delete");
+
+
+                                        }
+
+                                    ).show();
+                                  },
+                                  child: Icon(Icons.delete,color: Colors.redAccent, size: 25,)),
 
                               GestureDetector(
-                                onTap: (){
-                                 Navigate();
-                                },
+                                  onTap: (){
+                                    Navigate(index);
+                                  },
                                   child: Icon(Icons.inventory , color: Colors.blue,)),
                               GestureDetector(
-                                onTap: (){
-                                 CallPhoneNumber(index);
-                                },
+                                  onTap: (){
+                                    CallPhoneNumber(index);
+                                  },
                                   child: Icon(Icons.phone , color: Colors.blue,)),
                               GestureDetector(
                                   onTap: (){
@@ -117,22 +166,22 @@ import 'Add_Client_Screen.dart';
                             ],
                           ) , children: [
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(  "  رقم التليفون:- ${DataClient[index]['PhoneNumber']}"),
-                                  SizedBox(height: 20,),
-                                  Text(  "    العنوان:- ${DataClient[index]['Adress']}"),
-                                  SizedBox(height: 20,),
-                                  Text("   اسم الضامن:-  ${DataClient[index]['Friend']}"),
-                                  SizedBox(height: 20,),
-                                  Text("    رقم البطاقه:-  ${DataClient[index]['Nationalid']}"),
-                                  SizedBox(height: 15,),
-                                  Text("    رقم العميل ف الدفتر:-  ${DataClient[index]['numberClient']}" , style: TextStyle(fontWeight: FontWeight.bold),),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(  "  رقم التليفون:- ${DataClient[index]['PhoneNumber']}"),
+                                    SizedBox(height: 20,),
+                                    Text(  "    العنوان:- ${DataClient[index]['Adress']}"),
+                                    SizedBox(height: 20,),
+                                    Text("   اسم الضامن:-  ${DataClient[index]['Friend']}"),
+                                    SizedBox(height: 20,),
+                                    Text("    رقم البطاقه:-  ${DataClient[index]['Nationalid']}"),
+                                    SizedBox(height: 15,),
+                                    Text("    رقم العميل ف الدفتر:-  ${DataClient[index]['numberClient']}" , style: TextStyle(fontWeight: FontWeight.bold),),
 
-                                ],
-                              )
+                                  ],
+                                )
                             )
                           ],  ),
                         ),
@@ -140,8 +189,10 @@ import 'Add_Client_Screen.dart';
                     }
                 ),
               )
+
+
             ],
-          ),
+          )
         ),
       );
     }
@@ -158,9 +209,9 @@ import 'Add_Client_Screen.dart';
       await  launch('https://wa.me/$PhoneNumber?text=hello');
 
     }
-    void Navigate (){
+    void Navigate (index){
        Navigator.push(context, MaterialPageRoute(builder: (context){
-         return ClientInventroy();
+         return ClientInventroy(name: '${DataClient.elementAt(index)['Clientname']}', ClientNumber: '${DataClient.elementAt(index)['numberClient']}',);
        }));
     }
   }

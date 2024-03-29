@@ -1,11 +1,21 @@
 
-  import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobilysystem/Screens/Inventory_detail.dart';
 
 class ClientInventroy extends StatefulWidget {
-    const ClientInventroy({super.key});
+
+
+  static const  idScreen = "ClientInventroy";
+
+  String ClientNumber;
+  String name;
+
+
+     ClientInventroy({super.key , required this.name , required this.ClientNumber});
 
     @override
     State<ClientInventroy> createState() => _ClientInventroyState();
@@ -24,36 +34,8 @@ class ClientInventroy extends StatefulWidget {
   TextEditingController PriceController = TextEditingController();
   TextEditingController AfterPriceController = TextEditingController();
   TextEditingController PartsMoneyController = TextEditingController();
-  TextEditingController DateController = TextEditingController();
-
-  int ?results = 0,num1= 0 ,num2 = 0 , num3 = 0;
-
-  PricebeforeParts (){
-    setState(() {
-      num1 = int.parse(MoneyController.text);
-      num2 = int.parse(priceDierctController.text);
-
-      results = num2! - num1!;
-    });
-  }
-
-     int PricePartsValue = 0 ;
-
-  PriceParts (){
-
-    setState(() {
-      num1 = int.parse(priceDierctController.text);
-      num2 = int.parse(HanderdParsentController.text);
-      num3 = int.parse(MonthesNumberController.text);
-
-      PricePartsValue = num1! * num2!  ~/num3!;
-    });
-  }
-
-
-
-
-
+  TextEditingController _pickeddate = TextEditingController();
+  TextEditingController ClientNumberController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
   bool VisiableForm = false;
@@ -61,9 +43,40 @@ class ClientInventroy extends StatefulWidget {
   var formKey = GlobalKey<FormState>();
   CollectionReference InventroyData = FirebaseFirestore.instance.collection("inventroyData");
 
+
+
+  userPaymentss()
+  {
+    FirebaseFirestore.instance.collection('Clients').get().then((value)
+    {
+      value.docs.forEach((element)
+      {
+        if(element.data()['numberClient']==widget.ClientNumber) {
+          element.reference.collection(widget.name).add(
+              {
+                "nameClient" : widget.name,
+                "numberClient" : widget.ClientNumber,
+                "InvoicenameProduct" : InvicenameProductController.text,
+                "PriceParts" : pricePartController.text,
+                "DierctPrice" : priceDierctController.text,
+                "Money" : MoneyController.text,
+                "MounthsNumber" : MonthesNumberController.text,
+                "Parsent" : HanderdParsentController.text,
+                "Price" : PriceController.text,
+                "FinalPrice" : AfterPriceController.text,
+                "PartsMoney" : PartsMoneyController.text,
+                "Date" : _pickeddate.text,
+              });
+        }
+      });
+    });
+  }
+
   SaveInventory()async{
+
     await InventroyData.add({
-      "nameClient" : nameClientControllr.text,
+      "nameClient" : widget.name,
+      "numberClient" : widget.ClientNumber,
       "InvoicenameProduct" : InvicenameProductController.text,
       "PriceParts" : pricePartController.text,
       "DierctPrice" : priceDierctController.text,
@@ -73,32 +86,26 @@ class ClientInventroy extends StatefulWidget {
       "Price" : PriceController.text,
       "FinalPrice" : AfterPriceController.text,
       "PartsMoney" : PartsMoneyController.text,
-      "Data" : DateController.text,
+      "Date" : _pickeddate.text,
 
 
-    }) .then((value) => {
-      Container(
-        width: double.infinity,
-        child: Center(
-          child: Dialog(
-            child: Card(
-              color: Colors.white,
-              child: Text('تمت بنجاح' , style: TextStyle(color: Colors.green,fontSize: 20 , fontWeight: FontWeight.bold),),
-            ),
-          ),
-        ),
-      ),
-    }).catchError( (error) => {
-      Container(
-        width: double.infinity,
-        child: Dialog(
-          child: Card(
-            color: Colors.red,
-            child: Text('حصل خطا' , style: TextStyle(color: Colors.redAccent,fontSize: 20 , fontWeight: FontWeight.bold),),
-          ),
-        ),
-      ),
-    } ) ;
+    })  ;
+
+  }
+
+  Future <void> _SelectDate () async {
+
+    DateTime ? Picked = await   showDatePicker(context: context,
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2050),
+
+    );
+
+    if(Picked != null) {
+      setState(() {
+        _pickeddate.text = Picked.toString().split(" ")[0];
+      });
+    }
 
   }
 
@@ -130,19 +137,28 @@ class ClientInventroy extends StatefulWidget {
                   children: [
 
                     TextFormField(
-                      validator: (value){
-                        if(value!.isEmpty){
-                          return "البيانات مطلوبه";
 
-                        }
 
-                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16)
                         ),
-                        label: Text('اسم العميل'),
-                        hintText: "اسم العميل",
+                        label: Text(widget.ClientNumber),
+                        hintText: widget.ClientNumber,
+
+
+                      ),
+                      controller: ClientNumberController ,
+                    ),
+                    SizedBox(height: 20,),
+                    TextFormField(
+
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16)
+                        ),
+                        label: Text(widget.name),
+                        hintText: widget.name,
 
 
                       ),
@@ -169,6 +185,7 @@ class ClientInventroy extends StatefulWidget {
                       ),
                       controller: InvicenameProductController,
                     ),
+
                       SizedBox(height: 20,),
                     Container(
                       width: double.infinity,
@@ -176,11 +193,11 @@ class ClientInventroy extends StatefulWidget {
                         children: [
                           Expanded(child: InkWell(
                             onTap: (){
-                              PriceParts();
+
                             },
                             child: TextFormField(
 
-                              enabled: false,
+                              enabled: true,
 
                               controller: pricePartController,
                               validator:  (value){
@@ -194,8 +211,8 @@ class ClientInventroy extends StatefulWidget {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16)
                                 ),
-                                hintText: ' ',
-                                label: Text("  ")
+                                hintText: ' سعر القسط ',
+                                label: Text(" سعر القسط ")
                               ),
                             ),
                           )),
@@ -289,7 +306,7 @@ class ClientInventroy extends StatefulWidget {
                           SizedBox(width: 10,),
                           Expanded(child: InkWell(
                             onTap: (){
-                              PricebeforeParts();
+
                             },
                             child: TextFormField(
                               keyboardType: TextInputType.number,
@@ -362,70 +379,56 @@ class ClientInventroy extends StatefulWidget {
                       ),
                     ),
                     Divider(thickness: 2,),
-
                     GestureDetector(
                       onTap: (){
-                      showDatePicker(context: context,
-                          firstDate: DateTime(2008),
-                          lastDate: DateTime(2025),
-                        initialDate: DateTime.now(),
-                      ).then((value) => {
-                          setState (() => _dateTime = value! )
-                      } );
+                        _SelectDate();
                       },
                       child: TextFormField(
-                        controller: DateController,
-
-                        validator:  (value){
-                          if(value!.isEmpty){
-                            return "البيانات مطلوبه";
-
+                        validator: (value){
+                          if(value!.isEmpty)
+                          {
+                            return "Enter Data";
                           }
                         },
+                        controller: _pickeddate,
+                        enabled: false,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16)
-                          ),
-                          label: Text(_dateTime.toString()),
-                          hintText:  _dateTime.toString(),
-                          labelStyle: TextStyle(color: Colors.black , fontWeight: FontWeight.bold)
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(17)
+                            )
+                            ,
+                            label: Text("تاريخ الشراء")
+
 
                         ),
                       ),
                     ),
                     SizedBox(height: 12,),
+                   
+                    
                     Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16)
-                        ),
-                        child: MaterialButton(onPressed: (){
-                          if(formKey.currentState!.validate()){
-                            SaveInventory();
+                      width: double.infinity,
+                      child: MaterialButton(
+                        onPressed: (){
+                          if(formKey.currentState!.validate())
+                          {
 
 
+                         userPaymentss();
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context){
+                                return InventoryDetail();
+                              }));
 
                           }
-                          Center(
-                            child: Container(
-                              width: double.infinity,
-                              child: Center(
-                                child: Dialog(
-                                  child: Card(
-                                    color: Colors.white,
-                                    child: Text('تمت بنجاح' , style: TextStyle(color: Colors.green,fontSize: 20 , fontWeight: FontWeight.bold),),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return InventoryDetail();
-                          }));
-
-
-                        } ,  child: Text('اضافه الفاتوره' , style: TextStyle(color: Colors.white,fontSize: 20),),color: Colors.blue.shade900,)),
+                        } ,
+                        color: Colors.blue.shade900,
+                        child: Text("حفظ الفاتوره" , style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                        ),) ,
+                      ),
+                    )
 
 
 

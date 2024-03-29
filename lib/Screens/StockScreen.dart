@@ -1,10 +1,14 @@
 
-  import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilysystem/Screens/Add_product_screen.dart';
 
 class StockScreen extends StatefulWidget {
+
+  static const idScreen = "StockScreen";
+
     const StockScreen({super.key});
 
     @override
@@ -39,6 +43,14 @@ class StockScreen extends StatefulWidget {
 
   }
 
+  var totalStock;
+
+  TotalStock(index){
+
+  totalStock = Products[index]['PriceBuy'];
+
+  }
+
 
   @override
   void initState() {
@@ -54,7 +66,7 @@ class StockScreen extends StatefulWidget {
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('المحزن'),
+          title: Text('المخزن'),
 
           actions: [
              Padding(
@@ -77,7 +89,7 @@ class StockScreen extends StatefulWidget {
             return AddProduct();
           }));
         } , child: Icon(Icons.add),),
-        body: ListView.builder(
+        body: Products.isEmpty ? Center( child: Text("لا يوجد منتجات"), ) : ListView.builder(
 
           itemCount: Products.length,
           itemBuilder: (BuildContext context,  index) {
@@ -91,7 +103,32 @@ class StockScreen extends StatefulWidget {
                   children: [
                     Text("${Products[index]['ProductName']}"),
 
-                    Icon(Icons.delete,color: Colors.redAccent, size: 25,),
+                    GestureDetector(
+                        onTap: (){
+                          AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.warning,
+                              title: "حذف",
+                              desc: "متاكد من الحذف",
+                              btnOkOnPress: () async{
+                                print("deleted");
+                                await FirebaseFirestore.instance.collection("Products").doc(Products[index].id).delete();
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return StockScreen();
+                                }));
+
+
+
+                              },
+                              btnCancelOnPress: (){
+                                print("cancel delete");
+
+
+                              }
+
+                          ).show();
+                        },
+                        child: Icon(Icons.delete,color: Colors.redAccent, size: 25,)),
 
                     Icon(Icons.edit , color: Colors.blue,)
                   ],

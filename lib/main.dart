@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobilysystem/Screens/ClientScreen.dart';
+import 'package:mobilysystem/Screens/Inventory_table.dart';
 import 'package:mobilysystem/Screens/LoginScreen.dart';
+import 'package:mobilysystem/Screens/StockScreen.dart';
 
 import 'Screens/HomeScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +20,8 @@ void main() async {
   );
   runApp(const MyApp());
 }
+
+DatabaseReference userRef = FirebaseDatabase.instance.ref("user");
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -55,7 +61,8 @@ class MyApp extends StatelessWidget {
 
 
         ),
-        home: HomeScreen()
+     home:  HomeScreen()
+
       ),
     );
   }

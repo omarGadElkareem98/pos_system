@@ -13,10 +13,11 @@ import 'package:mobilysystem/Widgets/Custom_App_bar.dart';
 
 import 'ClientScreen.dart';
 import 'Inventory_detail.dart';
-import 'inventory_Sale.dart';
+
 
 
 class HomeScreen extends StatefulWidget {
+  static const  idScreen = "HomeScreen";
   const HomeScreen({super.key});
 
   @override
@@ -24,6 +25,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
 
 
   @override
@@ -66,106 +69,95 @@ class _HomeScreenState extends State<HomeScreen> {
           width: 250,
           child: Padding(
             padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-
-                // Container(
-                //   width: double.infinity,
-                //   height: 200,
-                //   decoration: BoxDecoration(
-                //     image: DecorationImage(image: AssetImage("assets/images/omar.jpg"))
-                //   ),
-                // ),
-                CircleAvatar(
-                  radius: 100,
-                  backgroundImage: AssetImage('assets/images/omar.jpg',),
-                ),
-                SizedBox(height: 10,),
-                Align(
-                  alignment: Alignment.topRight,
-                    child: Text("مطور التطبيق:- " , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),)),
-                Text("Omar Sabry" , style: TextStyle(fontStyle: FontStyle.italic , fontWeight: FontWeight.bold , fontSize: 19), ) ,
-                SizedBox(height: 10,),
-                Text(" junior Software developer") ,
-                SizedBox(height: 10,),
-                Text("Call Me :- 01156467293") ,
-                SizedBox(height: 10,),
-                Text("omarsabry8989@gmail.com") ,
-                Divider(
-                  thickness: 3,
-                ) ,
-                SizedBox(height: 15,),
-
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return InventorySale();
-                    }) );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.inventory),
-                      SizedBox(width: 10,),
-                      Text("فاتوره بيع" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
-                    ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+              
+                  // Container(
+                  //   width: double.infinity,
+                  //   height: 200,
+                  //   decoration: BoxDecoration(
+                  //     image: DecorationImage(image: AssetImage("assets/images/omar.jpg"))
+                  //   ),
+                  // ),
+                  CircleAvatar(
+                    radius: 100,
+                    backgroundImage: AssetImage('assets/images/omar.jpg',),
                   ),
-                ),
-                SizedBox(height: 15,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return InventoryBuy();
-                    }) );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.point_of_sale),
-                      SizedBox(width: 10,),
-                      Text("فاتوره شراء" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return ClientScreen();
-                    }) );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.person),
-                      SizedBox(width: 10,),
-                      Text(" العملاء" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return StockScreen();
-                    }) );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.store_mall_directory),
-                      SizedBox(width: 10,),
-                      Text(" المخزن" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15,),
+                  SizedBox(height: 10,),
+                  Align(
+                    alignment: Alignment.topRight,
+                      child: Text("مطور التطبيق:- " , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),)),
+                  Text("Omar Sabry" , style: TextStyle(fontStyle: FontStyle.italic , fontWeight: FontWeight.bold , fontSize: 19), ) ,
+                  SizedBox(height: 10,),
+                  Text(" junior Software developer") ,
+                  SizedBox(height: 10,),
+                  Text("Call Me :- 01156467293") ,
+                  SizedBox(height: 10,),
+                  Text("omarsabry8989@gmail.com") ,
+                  Divider(
+                    thickness: 3,
+                  ) ,
+                  SizedBox(height: 15,),
+              
 
-
-                Container(
-                  width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(17),
+                  SizedBox(height: 15,),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return InventoryBuy();
+                      }) );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.point_of_sale),
+                        SizedBox(width: 10,),
+                        Text("فاتوره شراء" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
+                      ],
                     ),
-                    child: MaterialButton(onPressed: (){} , color: Colors.blue.shade900, child: Text('تسجيل خروج' , style: TextStyle(color: Colors.white , fontWeight: FontWeight.bold , fontSize: 18),),))
-                
-              ],
+                  ),
+                  SizedBox(height: 15,),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return ClientScreen();
+                      }) );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.person),
+                        SizedBox(width: 10,),
+                        Text(" العملاء" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return StockScreen();
+                      }) );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.store_mall_directory),
+                        SizedBox(width: 10,),
+                        Text(" المخزن" , style: TextStyle(fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold , fontSize: 18),)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+              
+              
+                  Container(
+                    width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+                      child: MaterialButton(onPressed: (){} , color: Colors.blue.shade900, child: Text('تسجيل خروج' , style: TextStyle(color: Colors.white , fontWeight: FontWeight.bold , fontSize: 18),),))
+                  
+                ],
+              ),
             ),
           ),
         ),
@@ -196,28 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                              onTap : (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return  InventorySale();
-                                }) );
-                              },
-                              child: CategoryItem(ImageUrl: "https://www.shutterstock.com/image-vector/check-mark-icon-260nw-1015124191.jpg", text: 'فاتوره بيع')),
 
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: ( context) {
-                                  return InventoryBuy();
-                                }));
-                              },
-                              child: CategoryItem(ImageUrl: 'https://www.insightrobotics.com/wp-content/uploads/2018/10/inventory-icon-1.png', text: 'فاتوره شراء')),
-
-
-                        ],
-                      ),
 
                       const     SizedBox(height: 18,),
                       Row(

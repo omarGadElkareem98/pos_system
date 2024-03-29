@@ -1,11 +1,16 @@
 
-  import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobilysystem/Screens/Inventory_table.dart';
 
 class InventoryDetail extends StatefulWidget {
+
+
+
     const InventoryDetail({super.key});
 
     @override
@@ -19,27 +24,48 @@ class InventoryDetail extends StatefulWidget {
   
   List InventoryData = [];
 
+
+  List ClientsName = [];
+  List<String>ClientsNameTest = [];
+  List<String>ClientsNumberTest = [];
+
       getInventorydetail () async {
         
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('inventroyData').get();
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Clients').get();
         
-        InventoryData.addAll(querySnapshot.docs);
+        ClientsName.addAll(querySnapshot.docs);
         setState(() {
           
         });
 
       }
+  getInventorydetailTest() async {
+
+  FirebaseFirestore.instance.collection('Clients').get().then((value) 
+  {
+    value.docs.forEach((element) 
+    {
+      ClientsNameTest.add(element.data()['Clientname']);
+      ClientsNumberTest.add(element.data()['numberClient']);
+    });
+    setState(() {
+
+    });
+  });
+
+  }
 
       NavigateToInventoryDetail(index){
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return InventoryTable(client: InventoryData[index],);
+          return InventoryTable(client: ClientsNameTest[index], clientNumber: ClientsNumberTest[index], );
         }));
       }
 
       @override
   void initState() {
     // TODO: implement initState
-        getInventorydetail();
+    //    getInventorydetail();
+        getInventorydetailTest();
     super.initState();
   }
     @override
@@ -58,42 +84,29 @@ class InventoryDetail extends StatefulWidget {
                 ),
               ),
               SizedBox(height: 15,),
+
               SizedBox(
-                height: 700,
+                height: 650,
                 child: ListView.builder(
-                  itemCount: InventoryData.length,
-                    itemBuilder: (context ,  index){
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      color: Colors.grey.shade100,
-                      child: ExpansionTile(
-          
+                  itemCount: ClientsNameTest.length,
+                    itemBuilder: (context , index)
+                    {
+                      return ExpansionTile(
                           title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("   ${InventoryData[index]['nameClient']}") ,
-          
+                              Text(ClientsNameTest[index]),
                               TextButton(onPressed: (){
                                 NavigateToInventoryDetail(index);
-                              }, child: Text('تفاصيل الفاتوره'))
-          
+                              }, child: Text("عرض الفاتوره"))
                             ],
                           ),
-                          children: [
-                            Text(" اسم الصنف :- ${InventoryData[index]['InvoicenameProduct']}" , style: TextStyle(
-                              fontWeight: FontWeight.bold
-                            ),),
-                            Text(" سعر الكاش  :- ${InventoryData[index]['DierctPrice']}" , style: TextStyle(
-                                fontWeight: FontWeight.bold
-                            ),),
-          
-                          ],
-                      ),
-                    ),
-                  );
-                }),
-              ),
+
+                      );
+                    }
+                ) ,
+              )
+
+
             ],
           ),
         )
